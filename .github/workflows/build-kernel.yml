@@ -168,6 +168,12 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace
         git clone --recursive ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
 
+    - name: Fix Mediatek I2C driver bug (i2c-mtk.c)
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        sed -i 's/if ((id == 1) || (id == 6) || (id == 8))/if ((i2c->id == 1) || (i2c->id == 6) || (i2c->id == 8))/' drivers/i2c/busses/i2c-mtk.c
+        grep -n "i2c->id == 1" drivers/i2c/busses/i2c-mtk.c
+
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
       run: |
