@@ -283,6 +283,7 @@ jobs:
     - name: Build kernel
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        unset DISABLE_LTO
         if [ ${{ env.USE_GCC }} = true ]; then
             if [ ${{ env.USE_GCC_64 }} = true ]; then
                 export PATH=$GITHUB_WORKSPACE/kernel_workspace/gcc-64/bin:$PATH
